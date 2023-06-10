@@ -1,5 +1,4 @@
-import { FC, ReactNode } from 'react';
-import { useState } from 'react';
+import { FC, ReactNode, useState } from 'react';
 
 import { ISelectionMode } from '../../types/date.ts';
 
@@ -22,18 +21,6 @@ export const CalendarProvider: FC<CalendarProviderProps> = ({ children }) => {
 
 	const [selectionMode, setSelectionMode] = useState<ISelectionMode>('day');
 
-	const setMonthCorrectly = (month: number) => {
-		if (month === -1) {
-			setYear(year - 1);
-			setMonth(11);
-		} else if (month === 12) {
-			setYear(year + 1);
-			setMonth(0);
-		} else {
-			setMonth(month);
-		}
-	};
-
 	const value = {
 		date: { day, month, year },
 		selectedDate: { year: selectedYear, month: selectedMonth },
@@ -43,7 +30,7 @@ export const CalendarProvider: FC<CalendarProviderProps> = ({ children }) => {
 		setDay,
 		setYear,
 		setSelectionMode,
-		setMonth: setMonthCorrectly,
+		setMonth,
 	};
 
 	return (

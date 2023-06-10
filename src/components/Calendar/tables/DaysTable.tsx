@@ -2,7 +2,12 @@ import { FC, useMemo } from 'react';
 
 import { useCalendar } from '../../../hooks/useCalendar';
 import { daysOfWeekNames, MAX_DAYS_COUNT } from '../../../utils/constants/date';
-import { getDayOfWeek, getNumberOfDays, makeArrayOfDays } from '../../../utils/helpers/date';
+import {
+	getDayOfWeek,
+	getNextMonth,
+	getNumberOfDays,
+	makeArrayOfDays,
+} from '../../../utils/helpers/date';
 import { Cell, ClickableCell } from '../styled/Cell.styles';
 import { Table } from '../styled/Table.styles';
 
@@ -12,6 +17,7 @@ export const DaysTable: FC = () => {
 		date,
 		setDay,
 		setMonth,
+		setYear,
 		setSelectedYear,
 		setSelectedMonth,
 		selectedDate,
@@ -28,6 +34,8 @@ export const DaysTable: FC = () => {
 		const nextDaysCount = MAX_DAYS_COUNT - currentDaysNumber - prevDaysCount;
 		const nextDays = makeArrayOfDays(nextDaysCount);
 
+		console.log('rendered');
+
 		return {
 			current: currentDays,
 			next: nextDays,
@@ -36,12 +44,13 @@ export const DaysTable: FC = () => {
 	}, [date.month, date.year]);
 
 	const handleClick = (day: number, monthOffset = 0) => {
-		const month = date.month + monthOffset;
+		const newDate = getNextMonth(date.year, date.month + monthOffset);
 
-		setSelectedYear(date.year);
-		setSelectedMonth(month);
+		setSelectedYear(newDate.year);
+		setSelectedMonth(newDate.month);
 
-		setMonth(month);
+		setMonth(newDate.month);
+		setYear(newDate.year);
 		setDay(day);
 	};
 

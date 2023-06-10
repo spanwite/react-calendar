@@ -2,6 +2,24 @@ import { IDate } from '../../types/date.ts';
 import { locale } from '../constants/locale';
 
 
+export function getNextMonth(year: number, month: number) {
+	if (month === -1) {
+		return {
+			month: 11,
+			year: year - 1,
+		};
+	}
+
+	if (month === 12) {
+		return {
+			month: 0,
+			year: year + 1,
+		};
+	}
+
+	return { month, year };
+}
+
 export function getDayOfWeek(date: IDate) {
 	const day = new Date(date.year, date.month, date.day).getDay() - 1;
 	// monday - 0; sunday - 6

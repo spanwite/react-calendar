@@ -1,6 +1,6 @@
 import { useCalendar } from '../../hooks/useCalendar';
 import { monthsNames } from '../../utils/constants/date.ts';
-import { getDecade } from '../../utils/helpers/date.ts';
+import { getDecade, getNextMonth } from '../../utils/helpers/date.ts';
 import { ArrowButton } from '../ui/ArrowButton.tsx';
 
 
@@ -14,20 +14,35 @@ export const DateSelector = () => {
 	} = useCalendar();
 
 	const handleArrowClick = (offset: 1 | -1) => {
-		if (selectionMode === 'year') {
-			setYear(date.year + offset * 10);
-		} else if (selectionMode === 'month') {
-			setYear(date.year + offset);
-		} else {
-			setMonth(date.month + offset);
+		switch (selectionMode) {
+			case 'day': {
+				const newDate = getNextMonth(date.year, date.month + offset);
+
+				setMonth(newDate.month);
+				setYear(newDate.year);
+
+				break;
+			}
+
+			case 'month':
+				setYear(date.year + offset);
+				break;
+
+			case 'year':
+				setYear(date.year + offset * 10);
+				break;
 		}
 	};
 
 	const handleDateClick = () => {
-		if (selectionMode === 'day') {
-			setSelectionMode('month');
-		} else if (selectionMode === 'month') {
-			setSelectionMode('year');
+		switch (selectionMode) {
+			case 'day':
+				setSelectionMode('month');
+				break;
+
+			case 'month':
+				setSelectionMode('year');
+				break;
 		}
 	};
 
